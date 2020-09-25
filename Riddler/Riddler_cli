@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+from interface import CLI_Interface
+
+def main():
+    i = CLI_Interface()
+    i.run_single()
+    
+if __name__ == "__main__":
+    main()
