@@ -81,10 +81,13 @@ class MainPage(tk.Frame):
         self.init_frames(controller)
         self.init_message_widgets(controller)
         self.init_password_widgets(controller)
+        self.init_psswd_diff_widgets(controller)
 
     def init_frames(self, controller):
         self.frame_password = tk.Frame(self, bg=controller.clrs['main'])
         self.frame_password.pack(side='top', fill='both')
+        self.frame_diffic = tk.Frame(self, bg=controller.clrs['main'])
+        self.frame_diffic.pack(side='top', fill='both')
 
     def init_message_widgets(self, controller):
         self.label_message =  tk.Label(self.frame_password, text='',
@@ -137,6 +140,28 @@ class MainPage(tk.Frame):
         check_hide_password.pack(side='top', fill='both', padx=5)
         self.hide_password.set(1)
 
+    def init_psswd_diff_widgets(self, controller):
+        frame_left = tk.Frame(self.frame_diffic, bg=controller.clrs['main'])
+        frame_right = tk.Frame(self.frame_diffic, bg=controller.clrs['main'])
+        frame_left.pack(side='left', fill='both')
+        frame_right.pack(side='right', fill='both')
+        
+        self.label_entropy = tk.Label(frame_left, text='Nr bits required:',
+                                      bg=controller.clrs['main'])
+        self.label_entropy.pack(side='top', fill='both')
+
+        self.label_guesses = tk.Label(frame_left, text='Maximum nr of guesses:',
+                                      bg=controller.clrs['main'])
+        self.label_guesses.pack(side='top', fill='both')
+
+        self.label_entropy_res = tk.Label(frame_right, text='',
+                                      bg=controller.clrs['main'])
+        self.label_entropy_res.pack(side='top', fill='both')
+
+        self.label_guesses_res = tk.Label(frame_right, text='',
+                                      bg=controller.clrs['main'])
+        self.label_guesses_res.pack(side='top', fill='both')
+
     def generate_password(self):
         if self.entry_length.get().isdigit():
             length = int(self.entry_length.get())
@@ -153,7 +178,17 @@ class MainPage(tk.Frame):
         self.result_password.update()
         self.copy_to_clipboard(psswd)
         self.update_message_timer('Password copied to clipboard')
+        self.update_entropy(len(psswd))
 
+    def update_entropy(self, psswd_length):
+        entropy = self.rnd_gen.calculate_entropy(psswd_length, 75)
+        guesses = self.rnd_gen.calculate_max_guesses(entropy)
+
+        self.label_entropy_res['text'] = entropy
+        self.label_entropy_res.update()
+        self.label_guesses_res['text'] = guesses
+        self.label_guesses_res.update()
+        
     def update_message(self, text):
         self.label_message['text'] = text
         self.label_message.update()
