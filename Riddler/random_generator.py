@@ -103,7 +103,7 @@ class Random_generator():
     def calculate_max_guesses(self, entropy):
         guesses = 2**(entropy-1)
         return int(guesses)
-        
+
         
 
 if __name__ == '__main__':
