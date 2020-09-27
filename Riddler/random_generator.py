@@ -7,7 +7,7 @@ import numpy as np
 class Random_generator():
 
     def __init__(self):
-        pass
+        self.library_size = 0
 
     def __del__(self):
         pass
@@ -42,6 +42,7 @@ class Random_generator():
             library = library + string.digits
         if(include_spec_chars == True):
             library = library + string.punctuation
+        self.library_size = len(library)
 
         # Create a string of unique characters
         if(unique_only == True):
@@ -96,7 +97,9 @@ class Random_generator():
 
         return ''.join(memorable_string) + rnd_str
 
-    def calculate_entropy(self, nr_chars, library_size):
+    def calculate_entropy(self, nr_chars, library_size=None):
+        if library_size == None:
+            library_size = self.library_size
         entropy = np.ceil(nr_chars*(np.log(library_size)/np.log(2)))
         return int(entropy)
 

@@ -210,7 +210,7 @@ class MainPage(tk.Frame):
         self.update_entropy(len(psswd))
 
     def update_entropy(self, psswd_length):
-        entropy = self.rnd_gen.calculate_entropy(psswd_length, 75)
+        entropy = self.rnd_gen.calculate_entropy(psswd_length)
         guesses = self.rnd_gen.calculate_max_guesses(entropy)
 
         self.label_entropy_res['text'] = entropy
