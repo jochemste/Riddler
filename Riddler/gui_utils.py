@@ -59,7 +59,7 @@ class Entry_w_Placeholder(tk.Entry):
 
     def delete_if_empty(self, first, last, text):
         """
-        Deletes the contents of the entry if no edited
+        Deletes the contents of the entry if not edited
         
         Deletes the contents of the entry if the user did not change 
         the placeholder.

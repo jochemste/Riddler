@@ -104,9 +104,13 @@ class MainPage(tk.Frame):
                                        bg=controller.clrs['main'])
         self.label_password.pack(side='top', padx=10)
 
-        self.result_password = tk.Label(frame_left, text='********',
+        self.result_password = tk.Entry(frame_left,
                                        bg=controller.clrs['main'])
         self.result_password.pack(side='top', padx=10)
+        self.result_password.insert(0, ('*'*8))
+        #self.result_password = tk.Label(frame_left, text='********',
+        #                               bg=controller.clrs['main'])
+        #self.result_password.pack(side='top', padx=10)
         create_tooltip(self.result_password,
                        text='The resulting password will be shown here if selected')
 
@@ -119,24 +123,38 @@ class MainPage(tk.Frame):
         self.label_omit = tk.Label(frame_right, text='Characters to exclude:',
                                    bg=controller.clrs['main'])
         self.label_omit.pack(side='top', padx=10)
-        self.entry_omit = tk.Entry(frame_right)
+        self.entry_omit = tk.Entry(frame_right, bg=controller.clrs['main'])
         self.entry_omit.pack(side='top', padx=10)
         create_tooltip(self.entry_omit,
                        text='Type (or paste) any characters here to omit from a password')
 
         self.label_length = tk.Label(frame_right, text='Length of the password',
-                                   bg=controller.clrs['main'])
+                                     bg=controller.clrs['main'])
         
         self.label_length.pack(side='top', padx=10)
-        self.entry_length = tk.Entry(frame_right)
+        self.entry_length = tk.Entry(frame_right, bg=controller.clrs['main'])
         self.entry_length.insert(0, '8')
         self.entry_length.pack(side='top', padx=10)
 
+        self.mem_password = tk.IntVar()
+        check_mem_password = tk.Checkbutton(frame_right, text='Create memorable password',
+                                            variable=self.mem_password,
+                                            onvalue=1, offvalue=0,
+                                            bg=controller.clrs['main'])
+        check_mem_password.pack(side='top', fill='both', padx=5)
+        self.mem_password.set(0)
+        self.label_mem = tk.Label(frame_right, text='Memorable phrase:',
+                                     bg=controller.clrs['main'])
+        self.label_mem.pack(side='top', padx=10)
+        self.entry_mem = tk.Entry(frame_right, bg=controller.clrs['main'])
+        self.entry_mem.pack(side='top', padx=10)
+        
+        
         self.hide_password = tk.IntVar()
         check_hide_password = tk.Checkbutton(frame_right, text='Hide password',
                                          variable=self.hide_password,
                                          onvalue=1, offvalue=0,
-                                         bg=controller.clrs['button'])
+                                         bg=controller.clrs['main'])
         check_hide_password.pack(side='top', fill='both', padx=5)
         self.hide_password.set(1)
 
@@ -167,15 +185,26 @@ class MainPage(tk.Frame):
             length = int(self.entry_length.get())
         else:
             length = 8
+
         omit = self.entry_omit.get() + ' '
-        psswd = self.rnd_gen.create_random_str(chars_to_omit=omit,
-                                               string_length=length)
-        if self.hide_password.get() == 0:
-            self.result_password['text'] = psswd
+
+        if self.mem_password.get() == 1:
+            psswd = self.rnd_gen.create_memorable_string(pass_phrase=self.entry_mem.get(),
+                                                         chars_to_omit=omit,
+                                                         string_length=length)
         else:
-            self.result_password['text'] = '*'*length
+            psswd = self.rnd_gen.create_random_str(chars_to_omit=omit,
+                                                   string_length=length)
+        
+        self.result_password.delete(0, 'end')
+        if self.hide_password.get() == 0:
+            #self.result_password['text'] = psswd
+            self.result_password.insert(0, psswd)
+        else:
+            #self.result_password['text'] = '*'*length
+            self.result_password.insert(0, '*'*length)
             
-        self.result_password.update()
+        #self.result_password.update()
         self.copy_to_clipboard(psswd)
         self.update_message_timer('Password copied to clipboard')
         self.update_entropy(len(psswd))
