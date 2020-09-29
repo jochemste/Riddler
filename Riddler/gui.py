@@ -114,6 +114,15 @@ class MainPage(tk.Frame):
         create_tooltip(self.result_password,
                        text='The resulting password will be shown here if selected')
 
+        self.hide_password = tk.IntVar()
+        check_hide_password = tk.Checkbutton(frame_left, text='Hide password',
+                                         variable=self.hide_password,
+                                         onvalue=1, offvalue=0,
+                                         bg=controller.clrs['main'])
+        check_hide_password.pack(side='top', fill='both', padx=5)
+        self.hide_password.set(1)
+        create_tooltip(check_hide_password, text='Toggle the password to be hidden. Does not refresh unless a password is generated.')
+        
         self.button_password = tk.Button(frame_left, text='Generate password',
                                          command= self.generate_password,
                                          bg=controller.clrs['button'])
@@ -149,14 +158,6 @@ class MainPage(tk.Frame):
         self.entry_mem = tk.Entry(frame_right, bg=controller.clrs['main'])
         self.entry_mem.pack(side='top', padx=10)
         
-        
-        self.hide_password = tk.IntVar()
-        check_hide_password = tk.Checkbutton(frame_right, text='Hide password',
-                                         variable=self.hide_password,
-                                         onvalue=1, offvalue=0,
-                                         bg=controller.clrs['main'])
-        check_hide_password.pack(side='top', fill='both', padx=5)
-        self.hide_password.set(1)
 
     def init_psswd_diff_widgets(self, controller):
         frame_left = tk.Frame(self.frame_diffic, bg=controller.clrs['main'])

@@ -42,6 +42,13 @@ class Random_generator():
             library = library + string.digits
         if(include_spec_chars == True):
             library = library + string.punctuation
+
+        temp_library = ''
+        for i in range(len(library)):
+            if not(library[i] in chars_to_omit):
+                temp_library += library[i]
+        library = temp_library
+            
         self.library_size = len(library)
 
         # Create a string of unique characters
