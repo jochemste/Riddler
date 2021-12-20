@@ -10,7 +10,7 @@ class CLI_Interface():
         self.rg = Random_generator()
         self.argv = sys.argv[1:]
         self.opts, self.args = getopt.getopt(self.argv, '-l:-o:')
-        self.strlength=8
+        self.strlength=16
         self.omit=[' ']
         
         for opt in self.opts:
